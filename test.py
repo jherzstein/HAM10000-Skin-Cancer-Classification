@@ -176,8 +176,8 @@ def main():
         v2.Normalize(mean=[0.5071, 0.4867, 0.4408], std=[0.2675, 0.2565, 0.2761])
     ])
 
-    datasetFolder_val = datasets.DatasetFolder(root='./data', train=False, transform=transform)
-    val_loader = DataLoader(datasetFolder_val, batch_size=1, shuffle=False)
+    DatasetFolder_val = datasets.DatasetFolder(root='./data', train=False, transform=transform)
+    val_loader = DataLoader(DatasetFolder_val, batch_size=1, shuffle=False)
 
     top5_correct = 0
     top1_correct = 0

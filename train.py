@@ -158,11 +158,11 @@ def main():
 
 
     # Load HAM10000 dataset
-    DatasetFolder_train = datasets.DatasetFolder(root='./data', train=True, download=True, transform=transform)
-    DatasetFolder_val = datasets.DatasetFolder(root='./data', train=False, download=True, transform=transform)
+    DatasetFolder_train = datasets.DatasetFolder(root='./data', train=True,  transform=transform)
+    DatasetFolder_val = datasets.DatasetFolder(root='./data', train=False,  transform=transform)
 
-    train_loader = DataLoader(cifar100_train, batch_size=batch_size, shuffle=True)
-    val_loader = DataLoader(cifar100_val, batch_size=batch_size, shuffle=False)
+    train_loader = DataLoader(DatasetFolder_train, batch_size=batch_size, shuffle=True)
+    val_loader = DataLoader(DatasetFolder_val, batch_size=batch_size, shuffle=False)
 
 
     # need to replace the final layer with a new nn.Linear layer matching the num of class
