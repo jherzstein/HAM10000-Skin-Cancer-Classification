@@ -6,11 +6,12 @@ import datetime
 import argparse
 import matplotlib.pyplot as plt
 from torchvision import datasets, transforms
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader,TensorDataset
 from torchvision.transforms import v2
 from torchsummary import summary
 import os
 from kaggle.api.kaggle_api_extended import KaggleApi
+from PIL import Image
 
 # constant
 NUM_CLASS = 100
@@ -82,7 +83,9 @@ def init_weights(m):
     if type(m) == nn.Linear:
         torch.nn.init.xavier_uniform_(m.weight)
         m.bias.data.fill_(0.01)
-
+        
+def Img_loader(path):
+    return Image.open(path).convert('RGB')
 
 def main():
     save_file = './model.pth'
@@ -143,23 +146,23 @@ def main():
     ])
 
     # Authenticate the Kaggle API
-    api = KaggleApi()
-    api.authenticate()
+#     api = KaggleApi()
+#     api.authenticate()
     
     # Define the dataset and download path
-    dataset = 'surajghuwalewala/ham1000-segmentation-and-classification'
-    download_path = './data/'
+#     dataset = 'surajghuwalewala/ham1000-segmentation-and-classification'
+#     download_path = './data/'
     
-    # Create the directory if it doesn't exist
-    os.makedirs(download_path, exist_ok=True)
+#     # Create the directory if it doesn't exist
+#     os.makedirs(download_path, exist_ok=True)
     
     # Download the dataset
-    api.dataset_download_files(dataset, path=download_path, unzip=True)
+#     api.dataset_download_files(dataset, path=download_path, unzip=True)
 
 
     # Load HAM10000 dataset
-    DatasetFolder_train = datasets.DatasetFolder(root='./data', train=True,  transform=transform)
-    DatasetFolder_val = datasets.DatasetFolder(root='./data', train=False,  transform=transform)
+    DatasetFolder_train = datasets.DatasetFolder(root='./data/train',loader = Img_loader, extensions=('JPG','.jpg','.JPG','jpg'),  transform=transform)
+    DatasetFolder_val = datasets.DatasetFolder(root='./data/val',loader = Img_loader,extensions=('JPG','.jpg','.JPG','jpg'),  transform=transform)
 
     train_loader = DataLoader(DatasetFolder_train, batch_size=batch_size, shuffle=True)
     val_loader = DataLoader(DatasetFolder_val, batch_size=batch_size, shuffle=False)
