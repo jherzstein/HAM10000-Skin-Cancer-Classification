@@ -141,8 +141,8 @@ def main():
     ])
 
     # Load CIFAR100 dataset
-    cifar100_train = datasets.CIFAR100(root='./data', train=True, download=True, transform=transform)
-    cifar100_val = datasets.CIFAR100(root='./data', train=False, download=True, transform=transform)
+    DatasetFolder_train = datasets.DatasetFolder(root='./data', train=True, download=True, transform=transform)
+    DatasetFolder_val = datasets.DatasetFolder(root='./data', train=False, download=True, transform=transform)
 
     train_loader = DataLoader(cifar100_train, batch_size=batch_size, shuffle=True)
     val_loader = DataLoader(cifar100_val, batch_size=batch_size, shuffle=False)
