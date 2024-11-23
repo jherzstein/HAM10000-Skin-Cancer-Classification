@@ -11,12 +11,14 @@ DATASET_PATH = "/data/images"
 # specify the paths to our training and validation set 
 TRAIN = "/data/train"
 VAL = "/data/val"
+TEST = "/data/test"
 # set the input height and width
 INPUT_HEIGHT = 450
 INPUT_WIDTH = 600
 # set the batch size and validation data split
 BATCH_SIZE = 8
 VAL_SPLIT = 0.1
+TEST_SPLIT= 0.2
 
 
 
@@ -60,14 +62,17 @@ np.random.shuffle(images)
 
 # generate training and validation paths
 valLen = int(len(images) * VAL_SPLIT)
-trainsLen = len(images) - valLen
+testLen= int(len(images) * TEST_SPLIT)
+trainsLen = len(images) - valLen - testLen
 train = images[:trainsLen]
 val = images[trainsLen:]
+test = images[:valLen]
     
 
 
 copy_images(train, TRAIN,df_new)
 copy_images(val, VAL,df_new)
+copy_images(test, TEST, df_new)
 
 
 
