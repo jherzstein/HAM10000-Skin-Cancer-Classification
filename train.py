@@ -9,6 +9,8 @@ from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 from torchvision.transforms import v2
 from torchsummary import summary
+import os
+from kaggle.api.kaggle_api_extended import KaggleApi
 
 # constant
 NUM_CLASS = 100
@@ -140,7 +142,22 @@ def main():
         v2.Normalize(mean=[0.5071, 0.4867, 0.4408], std=[0.2675, 0.2565, 0.2761])
     ])
 
-    # Load CIFAR100 dataset
+    # Authenticate the Kaggle API
+    api = KaggleApi()
+    api.authenticate()
+    
+    # Define the dataset and download path
+    dataset = 'surajghuwalewala/ham1000-segmentation-and-classification'
+    download_path = './data/'
+    
+    # Create the directory if it doesn't exist
+    os.makedirs(download_path, exist_ok=True)
+    
+    # Download the dataset
+    api.dataset_download_files(dataset, path=download_path, unzip=True)
+
+
+    # Load HAM10000 dataset
     DatasetFolder_train = datasets.DatasetFolder(root='./data', train=True, download=True, transform=transform)
     DatasetFolder_val = datasets.DatasetFolder(root='./data', train=False, download=True, transform=transform)
 
