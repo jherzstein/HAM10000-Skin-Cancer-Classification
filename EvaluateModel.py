@@ -83,12 +83,19 @@ def main():
         v2.Normalize(mean=[0.5071, 0.4867, 0.4408], std=[0.2675, 0.2565, 0.2761])
     ])
     
+    
+    
+    
+    
+
     input_tensor = transform(image).unsqueeze(0)
     
     with torch.no_grad():  # Disable gradients for prediction
         output = train_model(input_tensor)
         predicted_class = output.argmax(dim=1).item()
-        print(predicted_class)
+        Labels = ["AKIEC","BCC","BKL","DF","MEL","NV","VASC"] 
+        print(image_path,predicted_class,Labels[int(predicted_class)])
+        
 if __name__ == '__main__':
     main()
 
