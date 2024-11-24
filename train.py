@@ -13,7 +13,7 @@ import os
 from kaggle.api.kaggle_api_extended import KaggleApi
 from PIL import Image
 
-# constant
+# constant WILL PROBABLY NEED TO EDIT AS THIS WAS FOR THE CIFAR100 PROBLEM
 NUM_CLASS = 100
 
 
