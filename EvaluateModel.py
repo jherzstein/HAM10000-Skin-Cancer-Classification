@@ -14,7 +14,7 @@ from kaggle.api.kaggle_api_extended import KaggleApi
 from PIL import Image
 
 
-NUM_CLASS = 100
+NUM_CLASS = 7
 
 
 
@@ -53,22 +53,24 @@ def main():
     
     # need to replace the final layer with a new nn.Linear layer matching the num of class
     if model_name == "alexnet":
-        train_model = models.alexnet(pretrained=True)
+        train_model = models.alexnet(weights=True)
         optimizer = optim.Adam(train_model.parameters(), lr=1e-3, weight_decay=1e-4)
         train_model.classifier[6] = nn.Linear(train_model.classifier[6].in_features, NUM_CLASS)
     elif model_name == "vgg":
-        train_model = models.vgg16(pretrained=True)
+        train_model = models.vgg16(weights=True)
         optimizer = optim.Adam(train_model.parameters(), lr=5e-5, weight_decay=1e-3)
         train_model.classifier[6] = nn.Linear(train_model.classifier[6].in_features, NUM_CLASS)
     elif model_name == "resnet":
-        train_model = models.resnet18(pretrained=True)
+        train_model = models.resnet18(weights=True)
         optimizer = optim.Adam(train_model.parameters(), lr=1e-3, weight_decay=1e-7)
         train_model.fc = nn.Linear(train_model.fc.in_features, NUM_CLASS)
     else:
         print("Error, invalid model name!\n")
         return
     #Set model to evaluate
+    train_model.load_state_dict(torch.load(save_file,weights_only=True))
     train_model.eval()
+    
     
     image_path = args.i
     image = Image.open(image_path).convert('RGB')
