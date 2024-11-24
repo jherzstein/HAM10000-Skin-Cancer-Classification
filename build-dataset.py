@@ -6,7 +6,7 @@ import pandas as pd
 
 
 
-# specify path to the flowers and mnist dataset
+# specify path to the HAM10000 dataset
 DATASET_PATH = "/data/images"
 # specify the paths to our training and validation set 
 TRAIN = "/data/train"
