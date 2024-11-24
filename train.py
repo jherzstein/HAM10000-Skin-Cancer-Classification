@@ -13,8 +13,8 @@ import os
 from kaggle.api.kaggle_api_extended import KaggleApi
 from PIL import Image
 
-# constant WILL PROBABLY NEED TO EDIT AS THIS WAS FOR THE CIFAR100 PROBLEM
-NUM_CLASS = 100
+# constant HAM100000 has 7 classes
+NUM_CLASS = 7
 
 
 # train function
