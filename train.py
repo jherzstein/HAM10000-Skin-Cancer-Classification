@@ -114,6 +114,9 @@ def main():
         elif args.m == 3:
             model_name = "resnet"
             save_file = "resnet.pth"
+        elif args.m == 4: 
+            model_name = "googlenet" 
+            save_file = "googlenet.pth"
     if args.s != None:
         batch_size = args.s
     if args.e != None:
@@ -180,6 +183,10 @@ def main():
     elif model_name == "resnet":
         train_model = models.resnet18(pretrained=True)
         optimizer = optim.Adam(train_model.parameters(), lr=1e-3, weight_decay=1e-7)
+        train_model.fc = nn.Linear(train_model.fc.in_features, NUM_CLASS)
+    elif model_name == "googlenet": 
+        train_model = models.googlenet(pretrained=True) 
+        optimizer = optim.Adam(train_model.parameters(), lr=1e-3, weight_decay=1e-4) 
         train_model.fc = nn.Linear(train_model.fc.in_features, NUM_CLASS)
     else:
         print("Error, invalid model name!\n")
