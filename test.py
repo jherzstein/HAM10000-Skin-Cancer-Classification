@@ -67,6 +67,7 @@ def main():
     alexnet_flag = False
     vgg_flag = False
     resnet_flag = False
+    googlenet_flag = False
     early_model = False
 
     NUM_CLASS = 100
@@ -77,6 +78,7 @@ def main():
     argParser.add_argument('-a', metavar='alexnet', type=int, help='alexnet flag, 1 for true, 0 for false')
     argParser.add_argument('-v', metavar='vgg', type=int, help='vgg flag, 1 for true, 0 for false')
     argParser.add_argument('-r', metavar='resnet', type=int, help='resnet flag, 1 for true, 0 for false')
+    argParser.add_argument('-g', metavar='googlenet', type=int, help='googlenet flag, 1 for true, 0 for false')
     argParser.add_argument('-m', metavar='ensemble method', type=int, help='emsemble method, 1: max prob, 2: avg prob, 3: majority vote')
     argParser.add_argument('-e', metavar='5 epoch model', type=int, help='using 5 epoch model flag, 1 for True, 0 for False')
 
@@ -93,6 +95,9 @@ def main():
     if args.r != None:
         if args.r == 1:
             resnet_flag = True
+    if aggs.r != None:
+        if args.g == 1:
+            googlenet_flag = True
     if args.m != None:
         if args.m == 1:
             method = "max_prob"
@@ -110,6 +115,7 @@ def main():
     print('\t\tapply alexnet = ', alexnet_flag)
     print('\t\tapply vgg = ', vgg_flag)
     print('\t\tapply resnet = ', resnet_flag)
+    print('\t\tapply googlenet = ', googlenet_flag)
     print('\t\tensemble method = ', method)
     print('\t\tusing 5 epochs model = ', early_model)
 
@@ -126,6 +132,7 @@ def main():
     alexnet = models.alexnet(pretrained=True)
     vgg16 = models.vgg16(pretrained=True)
     resnet18 = models.resnet18(pretrained=True)
+    googlenet = models.googlenet(pretrained=True)
 
     if alexnet_flag:
         # modify output layer
@@ -165,6 +172,19 @@ def main():
         
         resnet18.to(device)
         loaded_models.append(resnet18)    
+
+    if googlenet_flag:
+        # modify output layer
+        in_features = googlenet.fc.in_features
+        googlenet.fc = nn.Linear(in_features, NUM_CLASS)
+        
+        if early_model:
+            googlenet.load_state_dict(torch.load(base_dir + "googlenet_5epochs.pth"), strict=False)
+        else:
+            googlenet.load_state_dict(torch.load(base_dir + "googlenet.pth"), strict=False)
+        
+        googlenet.to(device)
+        loaded_models.append(googlenet)    
     
     
 
@@ -176,7 +196,7 @@ def main():
         v2.Normalize(mean=[0.5071, 0.4867, 0.4408], std=[0.2675, 0.2565, 0.2761])
     ])
 
-    DatasetFolder_val = datasets.DatasetFolder(root='./data/test', laoder = Img_loader, extensions=('JPG', '.jpg', '.JPG', 'jpg'), train=False, transform=transform)
+    DatasetFolder_val = datasets.DatasetFolder(root='./data/test', loader = Img_loader, extensions=('JPG', '.jpg', '.JPG', 'jpg'), train=False, transform=transform)
     val_loader = DataLoader(DatasetFolder_val, batch_size=1, shuffle=False)
 
     top5_correct = 0
