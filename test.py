@@ -10,6 +10,7 @@ from torch.utils.data import DataLoader
 alexnet_dir = "./alexnet_model.pth"
 vgg_dir = "./vgg_model.pth"
 resnet_dir = "./resnet_model.pth"
+googlenet_dir = "./goolglenet_model.pth"
 
 def ensemble(models, img, device, method="max_prob"):
     outputs = []
@@ -196,7 +197,7 @@ def main():
         v2.Normalize(mean=[0.5071, 0.4867, 0.4408], std=[0.2675, 0.2565, 0.2761])
     ])
 
-    DatasetFolder_val = datasets.DatasetFolder(root='./data/test', loader = Img_loader, extensions=('JPG', '.jpg', '.JPG', 'jpg'), train=False, transform=transform)
+    DatasetFolder_val = datasets.DatasetFolder(root='./data/val', loader = Img_loader, extensions=('JPG', '.jpg', '.JPG', 'jpg'), train=False, transform=transform)
     val_loader = DataLoader(DatasetFolder_val, batch_size=1, shuffle=False)
 
     top5_correct = 0
