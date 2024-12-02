@@ -96,7 +96,7 @@ def main():
     if args.r != None:
         if args.r == 1:
             resnet_flag = True
-    if aggs.r != None:
+    if args.r != None:
         if args.g == 1:
             googlenet_flag = True
     if args.m != None:
