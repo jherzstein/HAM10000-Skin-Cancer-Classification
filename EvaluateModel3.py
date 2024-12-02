@@ -13,6 +13,7 @@ import os
 from kaggle.api.kaggle_api_extended import KaggleApi
 from PIL import Image
 from tqdm import tqdm
+from sklearn import metrics
 
 
 NUM_CLASS = 7
@@ -84,6 +85,8 @@ def main():
     
     
     Labels = ["AKIEC","BCC","BKL","DF","MEL","NV","VASC"] 
+    Predictions=[]
+    ActualLabel=[]
     imageFolder_path = args.F
     Accuracy=0
     Num_Of_Images=0
@@ -99,12 +102,23 @@ def main():
             with torch.no_grad():  # Disable gradients for prediction
                 output = train_model(input_tensor)
                 predicted_class = output.argmax(dim=1).item()
-                if Labels[int(predicted_class)]==Class:
+                label = Labels[int(predicted_class)]
+                ActualLabel.append(Label)
+                ActualLabel.append(Class)
+                if Label==Class:
                     Accuracy+=1
                 Num_Of_Images+=1
                 #print(image_path,predicted_class,Labels[int(predicted_class)])
-    print(Accuracy/Num_Of_Images)
-        
+    print("Accuracy=",Accuracy/Num_Of_Images)
+    print("F1-Score=", metrics.f1_score(ActualLabel,ActualLabel))
+    print("Confusion matrix=", metrics.confusion_matrix(ActualLabel,ActualLabel))
+    
+    
+    
+    
+    
+    
+    
 if __name__ == '__main__':
     main()
 
