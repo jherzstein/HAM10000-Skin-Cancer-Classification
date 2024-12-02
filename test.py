@@ -6,6 +6,7 @@ import argparse
 import torch.nn as nn
 from torchvision.transforms import v2
 from torch.utils.data import DataLoader
+from PIL import Image
 
 alexnet_dir = "./alexnet_model.pth"
 vgg_dir = "./vgg_model.pth"
@@ -61,7 +62,8 @@ def ensemble(models, img, device, method="max_prob"):
         raise ValueError(f"Invalid ensemble method: {method}")
 
     return top5_probs, top5_indices
-
+def Img_loader(path):
+    return Image.open(path).convert('RGB')
 def main():
     base_dir = "./"
     method = ""
@@ -71,7 +73,7 @@ def main():
     googlenet_flag = False
     early_model = False
 
-    NUM_CLASS = 100
+    NUM_CLASS = 7
 
     # handle arguments
     argParser = argparse.ArgumentParser()
@@ -96,7 +98,7 @@ def main():
     if args.r != None:
         if args.r == 1:
             resnet_flag = True
-    if aggs.r != None:
+    if args.r != None:
         if args.g == 1:
             googlenet_flag = True
     if args.m != None:
@@ -164,7 +166,7 @@ def main():
     if resnet_flag:
         # modify output layer
         in_features = resnet18.fc.in_features
-        resnet18.fc = nn.Linear(in_features, 100)
+        resnet18.fc = nn.Linear(in_features, NUM_CLASS)
         
         if early_model:
             resnet18.load_state_dict(torch.load(base_dir + "resnet_5epochs.pth"), strict=False)
@@ -197,7 +199,7 @@ def main():
         v2.Normalize(mean=[0.5071, 0.4867, 0.4408], std=[0.2675, 0.2565, 0.2761])
     ])
 
-    DatasetFolder_val = datasets.DatasetFolder(root='./data/val', loader = Img_loader, extensions=('JPG', '.jpg', '.JPG', 'jpg'), train=False, transform=transform)
+    DatasetFolder_val = datasets.DatasetFolder(root='./data/test', loader = Img_loader, extensions=('JPG', '.jpg', '.JPG', 'jpg'), transform=transform)
     val_loader = DataLoader(DatasetFolder_val, batch_size=1, shuffle=False)
 
     top5_correct = 0
