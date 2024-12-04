@@ -40,6 +40,17 @@ python train.py -m 4 -s 64 -e 15
 
 ** Test Model
 ~test.py~ takes any model which you've trained with ~train.py~ and evaluates the performance of the model on the images in ~/data/test~
+*** Arguments
+- *-b*: Base directory
+- *-a*: Flag to test alexnet (0 or 1)
+- *-v*: Flag to test VGG (0 or 1) 
+- *-r*: Flag to test ResNet (0 or 1) 
+- *-g*: Flag to test GoogLeNet (0 or 1)  
+- *-m*: Specifies ensemble method.
+  - 1: Max Probability
+  - 2: Average Probability
+  - 3: Majority Vote
+- *-e*: Flag for using a 5 epoch model (0 or 1)
 *** Usage
 #+begin_src sh
 python test.py -b <base_dir> -a <alexnet_flag> -v <vgg_flag> -r <resnet_flag> -g <googlenet_flag> -m <ensemble_method> -e <epoch_flag>
@@ -53,5 +64,5 @@ python test.py -b <base_dir> -a <alexnet_flag> -v <vgg_flag> -r <resnet_flag> -g
 - *-i*: Image to Evaluate 
 *** Usage
 #+begin_src sh
-python EvaluateModel.py -m <model> -p <trained-parameters> -i <image>
+python EvaluateModel.py -m <model> -p <trained_parameters> -i <image>
 #+end_src
