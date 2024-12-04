@@ -5,9 +5,53 @@
 This project utilizes the H10000 dataset which labels cancerous and non-cancerous human skin images to create a model with pytorch to identify and label images as cancerous or non-cancerous.
 
 * How to Create
+** Dependencies
+You will need the following python dependencies
+#+BEGIN_SRC sh
+pip install torch torchvision matplotlib torchsummary kaggle pillow numpy pandas tqdm scikit-learn
+#+END_SRC
 ** Download Dataset
 Make sure that you have a [[https://www.kaggle.com/docs/api#authentication][Kaggle API token]] and use ~download-dataset.py~ to download the dataset. Alternatively use the CLI tool, kagglehub, curl, mlcroissant, or [[https://www.kaggle.com/datasets/surajghuwalewala/ham1000-segmentation-and-classification/data][download the H10000 dataset manually]], just make sure you unzip the dataset in the ~/data~ directory.
 
 ** Build Dataset
-Convert dataset into proper directory format using ~build-dataset.py~, it creates ~/data/train~ and ~/data/val~ and sub folders in each of those classes so that it can be used by pytorch.
+Convert dataset into proper directory format using ~build-dataset.py~, it creates ~/data/train~, ~/data/val~, and ~/data/test/~ (70/10/20 train/validation/test split, though this can be changed in the script) and sub folders in each of those classes so that it can be used by pytorch.
 
+** Train Model
+~train.py~ sets the conditions for training the classification model.
+*** Arguments
+Here are some command line arguments for customising the training process:
+- *-m* (required): Specified model for training
+  - 1: AlexNet
+  - 2: VGG 
+  - 3: ResNet 
+  - 4: GoogLeNet 
+- *-s*: Specifies the batch size for training. It accepts an integer value representing the size of the batch. 
+- *-e*: Specified number of epochs for training
+*** Usage
+This is the format in which you should run the training script:
+#+begin_src sh
+python train.py -m <model> -s <batch_size> -e <epochs>
+#+end_src
+
+For example, this is how you would run googlenet with a batch size of 64 for 15 epochs:
+#+begin_src sh
+python train.py -m 4 -s 64 -e 15
+#+end_src
+
+** Test Model
+~test.py~ takes any model which you've trained with ~train.py~ and evaluates the performance of the model on the images in ~/data/test~
+*** Usage
+#+begin_src sh
+python test.py -b <base_dir> -a <alexnet_flag> -v <vgg_flag> -r <resnet_flag> -g <googlenet_flag> -m <ensemble_method> -e <epoch_flag>
+#+end_src
+
+** Evaluate Model
+~EvaluateModel.py~ and ~EvaluateModel2.py~ evaluates the output of the models on single images
+*** Arguments
+- *-m*: Specified model for evaluation
+- *-p*: Trained parameters
+- *-i*: Image to Evaluate 
+*** Usage
+#+begin_src sh
+python EvaluateModel.py -m <model> -p <trained-parameters> -i <image>
+#+end_src
