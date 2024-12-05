@@ -37,6 +37,7 @@ For example, this is how you would run googlenet with a batch size of 64 for 15 
 #+begin_src sh
 python train.py -m 4 -s 64 -e 15
 #+end_src
+Trained models and their .pth files can be found at: [[https://queensuca-my.sharepoint.com/:f:/g/personal/19hc38_queensu_ca/EpL7iMttcsZMnrgLn55TvLcBTucjC76FX7eZ9fyQgLOuiA?e=kN0d3S][Our OneDrive Folder]] 
 
 ** Test Model
 ~test.py~ takes any model which you've trained with ~train.py~ and evaluates the performance of the model on the images in ~/data/test~
