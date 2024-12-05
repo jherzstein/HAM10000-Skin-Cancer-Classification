@@ -17,7 +17,7 @@ Make sure that you have a [[https://www.kaggle.com/docs/api#authentication][Kagg
 Convert dataset into proper directory format using ~build-dataset.py~, it creates ~/data/train~, ~/data/val~, and ~/data/test/~ (70/10/20 train/validation/test split, though this can be changed in the script) and sub folders in each of those classes so that it can be used by pytorch.
 
 ** Train Model
-~train.py~ sets the conditions for training the classification model.
+~train.py~ sets the conditions for training the classification model. Trained models and their ".pth" files can be found at our hugging face repository [[https://huggingface.co/jherzstein/HAM10000-Skin-Cancer-Classification/tree/models][Hugging Face repository]]
 *** Arguments
 Here are some command line arguments for customising the training process:
 - *-m* (required): Specified model for training
@@ -37,7 +37,6 @@ For example, this is how you would run googlenet with a batch size of 64 for 15 
 #+begin_src sh
 python train.py -m 4 -s 64 -e 15
 #+end_src
-Trained models and their .pth files can be found at: [[https://queensuca-my.sharepoint.com/:f:/g/personal/19hc38_queensu_ca/EpL7iMttcsZMnrgLn55TvLcBTucjC76FX7eZ9fyQgLOuiA?e=kN0d3S][Our OneDrive Folder]] 
 
 ** Test Model
 ~test.py~ takes any model which you've trained with ~train.py~ and evaluates the performance of the model on the images in ~/data/test~
