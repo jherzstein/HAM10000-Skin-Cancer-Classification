@@ -17,4 +17,4 @@ jobs:
       - name: Push to hub
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: git push https://jherzstein:$HF_TOKEN@huggingface.co/spaces/jherzstein/HAM10000-Skin-Cancer-Classification/ main
+        run: git push https://jherzstein:$HF_TOKEN@huggingface.co/jherzstein/HAM10000-Skin-Cancer-Classification/ main
